@@ -1,5 +1,3 @@
-package Task2;
-
 // import java.io.BufferedOutputStream;
 // import java.io.BufferedReader;
 // import java.io.BufferedWriter;
@@ -17,6 +15,7 @@ public class Main{
 
     public static void main(String[] args)
     {
+        User user = new User();
         Scanner s = new Scanner(System.in);
         int option = 0;
         boolean exit = false;
@@ -35,7 +34,7 @@ public class Main{
                 createAccount();
                 break;
             case 2:
-                login();
+                login(user);
                 break;
             
             case 3:
@@ -47,8 +46,9 @@ public class Main{
         }while(!exit);
     }
 
-    public static void login()
+    public static void login(User tmpUser)
     {
+        
         Scanner s = new Scanner(System.in);
             String filename = "account.txt";
             try
@@ -63,8 +63,8 @@ public class Main{
                 System.out.println(("Enter password: "));
                 String password = s.nextLine();
                 String _temp = null;
-                String _user;
-                String _pass;
+                String _user = tmpUser.getUser();
+                String _pass = tmpUser.getPass();
                 boolean found = false;
                 while((_temp = reader.readLine()) != null)
                 {
@@ -92,8 +92,9 @@ public class Main{
             
     }
 
-    public static void createAccount()
+    public static User createAccount()
     {
+        User tmpUser = new User();
         Scanner s = new Scanner(System.in);
             String filename = "account.txt";
             try{
@@ -103,10 +104,15 @@ public class Main{
                 System.out.println("CREATE ACCOUNT");
                 System.out.println("Enter username: ");
                 String username = s.nextLine();
+                tmpUser.setUser(username);
                 System.out.println(("Enter password: "));
                 String password = s.nextLine();
-            
-                writer.write(username + "," + password);
+                tmpUser.setPass(password);
+                System.out.println(("Enter money: "));
+                double startingInvestment = s.nextDouble();
+                tmpUser.setMoney(startingInvestment);
+                //output to ask for money
+                writer.write(tmpUser.getUser() + "," + tmpUser.getPass()+','+tmpUser.getMoney());
                 writer.newLine();
                 System.out.println("Your account has been created successfully");
                 writer.close();
@@ -121,8 +127,8 @@ public class Main{
                 s.close();
             }
             
-        
-
+        //enter initial investment
+        return tmpUser;
     }
 }
    

@@ -105,31 +105,51 @@ public class Main{
     {
         User tmpUser = new User();
         Scanner s = new Scanner(System.in);
-        String filename = "account.txt";
-        String file = "waiting.txt";
+        String filename = "waiting.txt";
+        String file = "account.txt";
         //System.out.println(new File("account.txt").getAbsoluteFile());
         
-
             try{
-                Path path = Paths.get(filename.toString());
+                // ALL NEW ACCOUNTS SAVED IN "waiting.txt"
+                // BOTH TEXT FILES USED ANYWAY (for account number)
+
+                // setup for "waiting.txt"
+                Path path = Paths.get(filename.toString()); 
                 OutputStream output = new BufferedOutputStream(Files.newOutputStream(path, APPEND));
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output));
-                int accNo = 0;
                 Scanner sc = new Scanner(path);
-                while(sc.hasNextLine()){
-                    sc.nextLine();
-                    accNo++;
+
+                //setup for "account.txt"
+                Path accPath = Paths.get(file.toString());
+                BufferedReader acnt = new BufferedReader(new FileReader(accPath.toString()));
+                Scanner scA = new Scanner(accPath);
+                
+                int accNo = 0;
+                
+                // checks if "account.txt" is empty
+                //yes - this is the first account, start counting from 0
+                if(acnt.readLine() == null){
+                    while(sc.hasNextLine())
+                    {
+                        sc.nextLine();
+                        accNo++;
+                    }
+
+                //no - other accounts have been made, so use the account number after the one in "account.txt"
+                }else{
+                    while(scA.hasNextLine())
+                    {
+                        scA.nextLine();
+                        accNo++;
+                    }
                 }
-                //System.out.println(" "+accNo );
+
                 tmpUser.setAccNo(accNo);
                 sc.close();
-                // BufferedReader reader = new BufferedReader(new FileReader("account.txt"));
-                // int lines = 0;
-                // while(reader.readLine() != null){
-                //     lines++;
-                // }
-                // reader.close();
-                //Getting user details and calling set methods
+                scA.close();
+
+                
+                //GETTING USER DETAILS, SAVING IN set() methods
                 System.out.println("CREATE ACCOUNT");
                 System.out.println("Enter username: ");
                 String username = s.nextLine();
@@ -141,7 +161,7 @@ public class Main{
                 double startingInvestment = s.nextDouble();
                 tmpUser.setMoney(startingInvestment);
 
-                //output to ask for money
+                //SAVES USER DETAILS IN FILE
                 writer.write(tmpUser.getAccNo()+","+tmpUser.getUser() + "," + tmpUser.getPass()+','+tmpUser.getMoney());
                 writer.newLine();
                 System.out.println("Your account has been sent to admin for approval");
@@ -149,6 +169,7 @@ public class Main{
                 writer.close();
                 output.close();
 
+                
                 System.out.println("Press any key to continue...");
                 String cont = s.nextLine();
                 //new Main();
@@ -162,12 +183,13 @@ public class Main{
         return tmpUser;
     }
 
-    
-    public static void admin(){
+    //FROM HERE - ADMIN METHODS
+    public static void admin(){ 
         waitingApproval();
     }
 
     
+    //LETS ADMIN APPROVE ACCOUNTS
     public static void waitingApproval(){
         Admin administrator = new Admin();
         String file = "waiting.txt";
@@ -181,7 +203,7 @@ public class Main{
                 String line;
 
                 while((line = readerTmp.readLine())!= null){
-                    System.out.println(line);
+                   // System.out.println(line); //sanity check
                     administrator.adminApprove(line);
                 }
             }catch(Exception ex){

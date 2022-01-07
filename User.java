@@ -6,7 +6,7 @@ public class User {
     // do the same for money
     public long accNo;
     public double money;
-    public boolean isReg = false;
+    
 
 
 
@@ -27,9 +27,6 @@ public void setMoney(double money){
     this.money = money;
 }
 
-public void setReg(boolean isReg){
-    this.isReg = isReg;
-}
 
 public String getUser(){
     return user;
@@ -37,10 +34,6 @@ public String getUser(){
 
 public String getPass(){
     return pass;
-}
-
-public boolean getReg(){
-    return isReg;
 }
 
 public long getAccNo(){

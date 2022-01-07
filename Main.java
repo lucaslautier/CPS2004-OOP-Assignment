@@ -17,6 +17,7 @@ public class Main{
 
     public static void main(String[] args) throws FileNotFoundException
     {
+        fillCryptos();
         User user = new User();
         Scanner s = new Scanner(System.in);
         int option = 0;
@@ -179,8 +180,50 @@ public class Main{
                 s.close();
             }
             
-        //enter initial investment
+        
         return tmpUser;
+    }
+
+
+
+    //CRYPTOCURRENCIES
+    public static void fillCryptos(){
+        Currencies currCrypto = new Currencies();
+        String cryptoFile = "crypto.txt";
+        
+        try{
+            Path path = Paths.get(cryptoFile.toString()); 
+            OutputStream output = new BufferedOutputStream(Files.newOutputStream(path, APPEND));
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output));
+            Scanner sc = new Scanner(path);
+
+            currCrypto.setCrypto("BTC");
+            currCrypto.setValue(504.98);
+            writer.write(currCrypto.getCrypto()+","+currCrypto.getValue());
+            
+            currCrypto.setCrypto("SOL");
+            writer.write(currCrypto.getCrypto()+","+currCrypto.getValue());
+
+            currCrypto.setCrypto("ETH");
+            currCrypto.setValue(250.17);
+            writer.write(currCrypto.getCrypto()+","+currCrypto.getValue());
+
+            currCrypto.setCrypto("XRP");
+            currCrypto.setValue(2.25);
+            writer.write(currCrypto.getCrypto()+","+currCrypto.getValue());
+
+            currCrypto.setCrypto("DOT");
+            currCrypto.setValue(15.67);
+            writer.write(currCrypto.getCrypto()+","+currCrypto.getValue());
+
+
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+
+
+      
+
     }
 
     //FROM HERE - ADMIN METHODS

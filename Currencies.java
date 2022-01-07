@@ -14,9 +14,14 @@ public void setValue(double value){
     this.value = value;
 }
 
-public String getUser(){
+public String getCrypto(){
     return crypto;
 }
+
+public double getValue(){
+    return value;
+}
+
 
 
 }

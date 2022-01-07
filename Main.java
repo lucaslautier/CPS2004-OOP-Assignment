@@ -15,7 +15,7 @@ import java.util.stream.*;
 
 public class Main{
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws FileNotFoundException
     {
         User user = new User();
         Scanner s = new Scanner(System.in);
@@ -71,7 +71,6 @@ public class Main{
                 String _user = tmpUser.getUser();
                 String _pass = tmpUser.getPass();
     
-                boolean _reg = tmpUser.getReg();
                 boolean found = false;
                 while((_temp = reader.readLine()) != null)
                 {
@@ -80,7 +79,7 @@ public class Main{
                     _pass = account[2];
                    
                     
-                    if(_user.equals(username) && _pass.equals(password) && tmpUser.getReg() == true){
+                    if(_user.equals(username) && _pass.equals(password)){
                         found = true;
                     }
                 }
@@ -107,6 +106,7 @@ public class Main{
         User tmpUser = new User();
         Scanner s = new Scanner(System.in);
         String filename = "account.txt";
+        String file = "waiting.txt";
         //System.out.println(new File("account.txt").getAbsoluteFile());
         
 
@@ -142,7 +142,7 @@ public class Main{
                 tmpUser.setMoney(startingInvestment);
 
                 //output to ask for money
-                writer.write(tmpUser.getAccNo()+","+tmpUser.getUser() + "," + tmpUser.getPass()+','+tmpUser.getMoney()+","+tmpUser.getReg());
+                writer.write(tmpUser.getAccNo()+","+tmpUser.getUser() + "," + tmpUser.getPass()+','+tmpUser.getMoney());
                 writer.newLine();
                 System.out.println("Your account has been sent to admin for approval");
 
@@ -164,13 +164,32 @@ public class Main{
 
     
     public static void admin(){
-        User tmpUser = new User();
-        System.out.println("User Details:");
-        tmpUser.getUser();
-
-
+        waitingApproval();
     }
+
+    
+    public static void waitingApproval(){
+        Admin administrator = new Admin();
+        String file = "waiting.txt";
+        //String filename = "account.txt";
+        try
+            {
+                Path path = Paths.get(file.toString());
+                InputStream inputTmp = Files.newInputStream(path);
+                BufferedReader readerTmp = new BufferedReader(new InputStreamReader(inputTmp));
+                
+                String line;
+
+                while((line = readerTmp.readLine())!= null){
+                    System.out.println(line);
+                    administrator.adminApprove(line);
+                }
+            }catch(Exception ex){
+                System.out.println(ex.getMessage());
+            }
+        }
 }
+
    
 
 

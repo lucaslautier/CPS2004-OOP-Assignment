@@ -15,16 +15,20 @@ import java.util.stream.*;
 
 public class Main{
 
-    public static void main(String[] args) throws FileNotFoundException
+    public static void main(String[] args) throws FileNotFoundException, IOException
     {
+        clearFile("crypto.txt");
         fillCryptos();
         User user = new User();
+        Currencies currCrypto = new Currencies();
         Scanner s = new Scanner(System.in);
         int option = 0;
         boolean exit = false;
 
         do{
-        
+        //CHANGE MENU TO:
+        //1. CREATE 2.BUY 3.SELL 4.EXIT
+        //BUY & SELL - HAVE LOGIN THEN CALL METHOD
         System.out.println("Enter what option you would like to choose");
         System.out.println("1. Create Account");
         System.out.println("2. Login");
@@ -43,13 +47,16 @@ public class Main{
                 exit = true;
                 s.close();
                 break;
+
+            case 5:
+                buyCrypto(currCrypto);
             
             case 99:
                 admin();
                 break;
         }
         
-        }while(!exit);
+        }while(option != 3);
     }
 
     public static void login(User tmpUser)
@@ -184,9 +191,15 @@ public class Main{
         return tmpUser;
     }
 
+    public static void clearFile(String file) throws IOException{
+        PrintWriter writer = new PrintWriter(file);
+        writer.print("");
+        writer.close();
+    }
 
+    //CRYPTOCURRENCY METHODS
 
-    //CRYPTOCURRENCIES
+    //LOAD CRYPTOS INTO FILE
     public static void fillCryptos(){
         Currencies currCrypto = new Currencies();
         String cryptoFile = "crypto.txt";
@@ -195,36 +208,144 @@ public class Main{
             Path path = Paths.get(cryptoFile.toString()); 
             OutputStream output = new BufferedOutputStream(Files.newOutputStream(path, APPEND));
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output));
-            Scanner sc = new Scanner(path);
-
+            
+            // FileWriter writer = new FileWriter(cryptoFile);
             currCrypto.setCrypto("BTC");
-            currCrypto.setValue(504.98);
+            currCrypto.setValue("504.98");
             writer.write(currCrypto.getCrypto()+","+currCrypto.getValue());
+            writer.newLine();
             
             currCrypto.setCrypto("SOL");
             writer.write(currCrypto.getCrypto()+","+currCrypto.getValue());
+            writer.newLine();
 
             currCrypto.setCrypto("ETH");
-            currCrypto.setValue(250.17);
+            currCrypto.setValue("250.17");
             writer.write(currCrypto.getCrypto()+","+currCrypto.getValue());
+            writer.newLine();
 
             currCrypto.setCrypto("XRP");
-            currCrypto.setValue(2.25);
+            currCrypto.setValue("2.25");
             writer.write(currCrypto.getCrypto()+","+currCrypto.getValue());
+            writer.newLine();
 
             currCrypto.setCrypto("DOT");
-            currCrypto.setValue(15.67);
+            currCrypto.setValue("15.67");
             writer.write(currCrypto.getCrypto()+","+currCrypto.getValue());
+            writer.newLine();
 
-
+            writer.close();
         }catch(Exception ex){
             System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
 
-
-      
-
     }
+
+
+    //BUY CRYPTO
+    public static void buyCrypto(Currencies currCrypto){
+        Scanner s = new Scanner(System.in);
+        String cryptoFile = "crypto.txt";
+
+        try{
+            Path path = Paths.get(cryptoFile.toString());
+            InputStream input = Files.newInputStream(path);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+
+            System.out.println("What crypto would you like to buy: ");
+            String crypto = s.nextLine();
+            System.out.println("How much would you like to buy (in FIAT): ");
+            double value = s.nextDouble();
+
+            String _temp = null;
+            String _crypto = currCrypto.getCrypto();
+            String _value = currCrypto.getValue();
+            boolean foundCrypto = false;
+            double doubleValue = 0.0;
+            while((_temp = reader.readLine()) != null)
+            {
+                String[] cryptos = _temp.split(",");
+                _crypto = cryptos[0];
+                
+
+                if(_crypto.equals(crypto)){
+                    foundCrypto = true;
+                    _value = cryptos[1];
+                    doubleValue = Double.parseDouble(_value);   
+                    break;                
+                }
+                
+            }
+            //DECREASE MONEY FROM ACCOUNT
+            if(foundCrypto == true){
+                double cryptoBought = value /doubleValue;
+                System.out.println("You have successfully purchased "+cryptoBought+" in "+_crypto);
+            }
+            else{
+                System.out.println("The crypto you are trying to buy does not exist in this system.");
+            }
+
+
+            
+
+        }catch(Exception ex){
+            System.out.print(ex.getMessage());
+        }
+    }
+
+    // //SELL CRYPTO
+    // public static void sellCrypto(Currencies currCrypto){
+    //     Scanner s = new Scanner(System.in);
+    //     String cryptoFile = "crypto.txt";
+
+    //     try{
+    //         Path path = Paths.get(cryptoFile.toString());
+    //         InputStream input = Files.newInputStream(path);
+    //         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+
+    //         System.out.println("What crypto would you like to sell: ");
+    //         String crypto = s.nextLine();
+    //         System.out.println("How much would you like to sell (in FIAT): ");
+    //         double value = s.nextDouble();
+
+    //         String _temp = null;
+    //         String _crypto = currCrypto.getCrypto();
+    //         String _value = currCrypto.getValue();
+    //         boolean foundCrypto = false;
+    //         double doubleValue = 0.0;
+    //         while((_temp = reader.readLine()) != null)
+    //         {
+    //             String[] cryptos = _temp.split(",");
+    //             _crypto = cryptos[0];
+                
+
+    //             if(_crypto.equals(crypto)){
+    //                 foundCrypto = true;
+    //                 _value = cryptos[1];
+    //                 doubleValue = Double.parseDouble(_value);   
+    //                 break;                
+    //             }
+                
+    //         }
+
+    //         //INCREASE MONEY IN ACCOUNT
+    //         if(foundCrypto == true){
+    //             double cryptoSold = value /doubleValue;
+    //             System.out.println("You have successfully sold "+cryptoSold+" in "+_crypto);
+    //         }
+    //         else{
+    //             System.out.println("The crypto you are trying to buy does not exist in this system.");
+    //         }
+
+
+            
+
+    //     }catch(Exception ex){
+    //         System.out.print(ex.getMessage());
+    //     }
+    // }
+
 
     //FROM HERE - ADMIN METHODS
     public static void admin(){ 

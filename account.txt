@@ -1,3 +1,5 @@
 0,lucas,test,1000.0
 1,assignment,please,500.0
 2,oop,assignment,900.0
+3,me,please,600.0
+3,another,one,900.0

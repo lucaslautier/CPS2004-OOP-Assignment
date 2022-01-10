@@ -1,5 +1,4 @@
-0,lucas,test,1000.0
-1,assignment,please,500.0
-2,oop,assignment,900.0
-3,me,please,600.0
-3,another,one,900.0
+0,lucas,lautier,900.0
+1,test,me,900.0
+1,please,man,900.0
+1,me,now,88.0

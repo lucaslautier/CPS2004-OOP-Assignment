@@ -40,7 +40,9 @@ public class Main{
                 createAccount();
                 break;
             case 2:
-                login(user);
+                long accountNo = login(user);
+                System.out.println(accountNo);
+                buyCrypto(currCrypto, user, accountNo);
                 break;
             
             case 3:
@@ -49,7 +51,7 @@ public class Main{
                 break;
 
             case 5:
-                buyCrypto(currCrypto);
+                // buyCrypto(currCrypto, user);
             
             case 99:
                 admin();
@@ -59,9 +61,9 @@ public class Main{
         }while(option != 3);
     }
 
-    public static void login(User tmpUser)
+    public static long login(User tmpUser)
     {
-        
+        long _acc = 1000;
         Scanner s = new Scanner(System.in);
             String filename = "account.txt";
             try
@@ -76,8 +78,11 @@ public class Main{
                 System.out.println(("Enter password: "));
                 String password = s.nextLine();
                 String _temp = null;
-                String _user = tmpUser.getUser();
-                String _pass = tmpUser.getPass();
+                String _user = " ";
+                String _pass = " ";
+                // String _user = tmpUser.getUser();
+                // String _pass = tmpUser.getPass();
+                // _acc = tmpUser.getAccNo();
     
                 boolean found = false;
                 while((_temp = reader.readLine()) != null)
@@ -85,10 +90,12 @@ public class Main{
                     String[] account = _temp.split(",");
                     _user = account[1];
                     _pass = account[2];
+                    
                    
                     
                     if(_user.equals(username) && _pass.equals(password)){
                         found = true;
+                        _acc = Long.parseLong(account[0]) ;
                     }
                 }
                 if(found == true){
@@ -106,6 +113,9 @@ public class Main{
                 System.out.print(ex.getMessage());
                 s.close();
             }
+
+            
+            return _acc;
             
     }
 
@@ -244,14 +254,23 @@ public class Main{
 
 
     //BUY CRYPTO
-    public static void buyCrypto(Currencies currCrypto){
+    public static void buyCrypto(Currencies currCrypto, User user, long pAccNo){
+
+
         Scanner s = new Scanner(System.in);
         String cryptoFile = "crypto.txt";
-
+        String portfolioFile = "portfolio.txt";
+        
         try{
             Path path = Paths.get(cryptoFile.toString());
             InputStream input = Files.newInputStream(path);
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+
+
+            Path portpath = Paths.get(portfolioFile.toString()); 
+            OutputStream output = new BufferedOutputStream(Files.newOutputStream(portpath, APPEND));
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output));
+            Scanner sc = new Scanner(portpath);
 
             System.out.println("What crypto would you like to buy: ");
             String crypto = s.nextLine();
@@ -277,10 +296,15 @@ public class Main{
                 }
                 
             }
-            //DECREASE MONEY FROM ACCOUNT
+            //DECREASE MONEY FROM ACCOUNT - STOPS
             if(foundCrypto == true){
                 double cryptoBought = value /doubleValue;
                 System.out.println("You have successfully purchased "+cryptoBought+" in "+_crypto);
+                //pAccNo = user.getAccNo();
+
+                writer.write(pAccNo+","+ cryptoBought + "," + _crypto);
+                writer.newLine();
+                writer.close();
             }
             else{
                 System.out.println("The crypto you are trying to buy does not exist in this system.");

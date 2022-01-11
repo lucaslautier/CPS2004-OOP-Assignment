@@ -7,6 +7,7 @@ public class User {
     public long accNo;
     public double money;
     
+    public boolean isLoggedIn;
 
 
 
@@ -27,6 +28,9 @@ public void setMoney(double money){
     this.money = money;
 }
 
+public void setLogBool(boolean isLoggedIn){
+    this.isLoggedIn = isLoggedIn;
+}
 
 public String getUser(){
     return user;
@@ -42,5 +46,9 @@ public long getAccNo(){
 
 public double getMoney(){
     return money;
+}
+
+public boolean getLogBool(){
+    return isLoggedIn;
 }
 }

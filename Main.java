@@ -18,14 +18,15 @@ public class Main{
     public static void main(String[] args) throws FileNotFoundException, IOException
     {
         clearFile("crypto.txt");
-        fillCryptos();
-        User user = new User();
-        Currencies currCrypto = new Currencies();
+        fillCryptos();                                  // fills crypto file with available currencies
+        User user = new User();                         //new instance of type user
+        Currencies currCrypto = new Currencies();       //new instance of all the cryptps
         Scanner s = new Scanner(System.in);
-        int option = 0;
-        int buyOrSell = 10;
+
+        int option = 0;             // what option for the menu
+        int buyOrSell = 10;         //checks if the user will go into 'exchangeCrypto' to buy or sell
         boolean exit = false;
-        long accountNo;
+        long accountNo;             //holds current acc no
         do{
         //CHANGE MENU TO:
         //1. CREATE 2.BUY 3.SELL 4.EXIT
@@ -40,29 +41,34 @@ public class Main{
         switch (option){
             case 1:
                 createAccount();
-                System.out.println("test");
                 break;
             case 2:
-                accountNo = login(user);
+                //accountNo = login(user);
+                login(user);
+                accountNo = user.getAccNo();
                 buyOrSell = 0;
                 //System.out.println(accountNo);
-                exchangeCrypto(currCrypto, user, accountNo,buyOrSell);
+                if(user.getLogBool() == true){
+                    exchangeCrypto(currCrypto, user, accountNo,buyOrSell);
+                }
+               
                 break;
             
             case 3:
-                accountNo = login(user);
+                //accountNo = login(user);
+                login(user);
+                accountNo = user.getAccNo();
                 buyOrSell = 1;
                 //System.out.println(accountNo);
-                exchangeCrypto(currCrypto, user, accountNo, buyOrSell);
+                if(user.getLogBool() == true){
+                    exchangeCrypto(currCrypto, user, accountNo, buyOrSell);
+                }
                 break;
             
             case 4:
                 exit = true;
                 s.close();
                 break;
-
-            case 5:
-                // buyCrypto(currCrypto, user);
             
             case 99:
                 admin();
@@ -72,7 +78,7 @@ public class Main{
         }while(option != 3);
     }
 
-    public static long login(User tmpUser)
+    public static void login(User tmpUser)
     {
         long _acc = 1000;
         Scanner s = new Scanner(System.in);
@@ -102,19 +108,25 @@ public class Main{
                     _user = account[1];
                     _pass = account[2];
                     
-                   
-                    
                     if(_user.equals(username) && _pass.equals(password)){
                         found = true;
                         _acc = Long.parseLong(account[0]) ;
+                        tmpUser.setAccNo(_acc);
+                        tmpUser.setLogBool(found);
                     }
                 }
+
                 if(found == true){
                     System.out.println("Login Successful");
-
+                    
                 }
                 else{
                     System.out.println("Credentials entered did not match or account is not verified by administrator.");
+                    tmpUser.setLogBool(found);
+                    // System.out.println("Press any key to continue...");
+                    // String cont = s.nextLine();
+                    
+                    
                 }
                 
                 System.out.println("Press any key to continue...");
@@ -124,12 +136,10 @@ public class Main{
                 System.out.print(ex.getMessage());
                 s.close();
             }
-
-            
-            return _acc;
             
     }
 
+   
     public static User createAccount()
     {
         User tmpUser = new User();

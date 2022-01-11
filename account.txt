@@ -1,4 +1,2 @@
-0,lucas,lautier,900.0
-1,test,me,900.0
-1,please,man,900.0
-1,me,now,88.0
+0,lucas,test,900.0
+1,bing,bong,500.0

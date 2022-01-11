@@ -24,7 +24,8 @@ public class Main{
         Scanner s = new Scanner(System.in);
 
         int option = 0;             // what option for the menu
-        int buyOrSell = 10;         //checks if the user will go into 'exchangeCrypto' to buy or sell
+        int buyOrSell = 10;  
+        double money;       //checks if the user will go into 'exchangeCrypto' to buy or sell
         boolean exit = false;
         long accountNo;             //holds current acc no
         do{
@@ -47,9 +48,11 @@ public class Main{
                 login(user);
                 accountNo = user.getAccNo();
                 buyOrSell = 0;
-                //System.out.println(accountNo);
+                System.out.println(accountNo);
+                money = user.getMoney();
+                //System.out.println(money); sanity check
                 if(user.getLogBool() == true){
-                    exchangeCrypto(currCrypto, user, accountNo,buyOrSell);
+                    exchangeCrypto(currCrypto, user, accountNo,buyOrSell,money);
                 }
                
                 break;
@@ -60,8 +63,10 @@ public class Main{
                 accountNo = user.getAccNo();
                 buyOrSell = 1;
                 //System.out.println(accountNo);
+                money = user.getMoney();
+                //System.out.println(money); sanity check
                 if(user.getLogBool() == true){
-                    exchangeCrypto(currCrypto, user, accountNo, buyOrSell);
+                    exchangeCrypto(currCrypto, user, accountNo, buyOrSell,money);
                 }
                 break;
             
@@ -80,7 +85,7 @@ public class Main{
 
     public static void login(User tmpUser)
     {
-        long _acc = 1000;
+      
         Scanner s = new Scanner(System.in);
             String filename = "account.txt";
             try
@@ -97,6 +102,8 @@ public class Main{
                 String _temp = null;
                 String _user = " ";
                 String _pass = " ";
+                //long _acc = 1000;
+                //double _money = 0.0;
                 // String _user = tmpUser.getUser();
                 // String _pass = tmpUser.getPass();
                 // _acc = tmpUser.getAccNo();
@@ -110,8 +117,10 @@ public class Main{
                     
                     if(_user.equals(username) && _pass.equals(password)){
                         found = true;
-                        _acc = Long.parseLong(account[0]) ;
-                        tmpUser.setAccNo(_acc);
+                        //_acc = Long.parseLong(account[0]) ;
+                        //_money = Double.parseDouble(account[3]);
+                        tmpUser.setAccNo(Long.parseLong(account[0]));
+                        tmpUser.setMoney(Double.parseDouble(account[3]));
                         tmpUser.setLogBool(found);
                     }
                 }
@@ -275,7 +284,7 @@ public class Main{
 
 
     //BUY CRYPTO
-    public static void exchangeCrypto(Currencies currCrypto, User user, long pAccNo, int buySell ){
+    public static void exchangeCrypto(Currencies currCrypto, User user, long pAccNo, int buySell, double money ){
 
         Scanner s = new Scanner(System.in);
         String cryptoFile = "crypto.txt";

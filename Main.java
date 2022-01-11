@@ -155,6 +155,7 @@ public class Main{
         Scanner s = new Scanner(System.in);
         String filename = "waiting.txt";
         String file = "account.txt";
+        long lines = 0;
         //System.out.println(new File("account.txt").getAbsoluteFile());
         
             try{
@@ -172,25 +173,39 @@ public class Main{
                 BufferedReader acnt = new BufferedReader(new FileReader(accPath.toString()));
                 Scanner scA = new Scanner(accPath);
                 
-                int accNo = 0;
+                long accNo = 0;
+                // boolean isNull = true;
                 
+
+
+                lines = Files.lines(accPath).count();
+                System.out.println(lines);
+                accNo = lines;
                 // checks if "account.txt" is empty
                 //yes - this is the first account, start counting from 0
-                if(acnt.readLine() == null){
-                    while(sc.hasNextLine())
-                    {
-                        sc.nextLine();
-                        accNo++;
-                    }
 
-                //no - other accounts have been made, so use the account number after the one in "account.txt"
-                }else{
-                    while(scA.hasNextLine())
-                    {
-                        scA.nextLine();
-                        accNo++;
-                    }
+                if(acnt.readLine() == null){
+                    // while(sc.hasNextLine())
+                    // {
+                    lines = Files.lines(path).count();
+                    accNo = lines;
+                        // sc.nextLine();
+                        // accNo++;
+                    //}
                 }
+                else{
+                    lines = Files.lines(accPath).count();
+                    accNo = lines;
+                }
+
+                // //no - other accounts have been made, so use the account number after the one in "account.txt"
+                // }else{
+                //     while(scA.hasNextLine())
+                //     {
+                //         scA.nextLine();
+                //         accNo++;
+                //     }
+                // }
 
                 tmpUser.setAccNo(accNo);
                 sc.close();
@@ -432,6 +447,9 @@ public class Main{
     public static void waitingApproval(){
         Admin administrator = new Admin();
         String file = "waiting.txt";
+        Scanner s = new Scanner(System.in);
+        boolean isApproved = false;
+        boolean isDone = false;
         //String filename = "account.txt";
         try
             {
@@ -439,16 +457,44 @@ public class Main{
                 InputStream inputTmp = Files.newInputStream(path);
                 BufferedReader readerTmp = new BufferedReader(new InputStreamReader(inputTmp));
                 
-                String line;
+                String line = null;
 
                 while((line = readerTmp.readLine())!= null){
+
+                    String[] waitingAcc = line.split(",");
+
+                    System.out.println("The following person has requested to be authenticated:");
+                    System.out.println("Username: "+waitingAcc[1]);
+                    System.out.println("Initial Investment: "+waitingAcc[3]);
                    // System.out.println(line); //sanity check
-                    administrator.adminApprove(line);
+
+                    System.out.println();
+                    System.out.println("Approve (1) or Decline (0)?");
+                    int AD = s.nextInt();
+
+                    if(AD == 1){
+                        isApproved = true;
+                        administrator.adminApprove(line, isApproved, isDone);
+                    }
+                    else if(AD == 0){
+                        isApproved = false;
+                        administrator.adminApprove(line, isApproved, isDone);
+                    }
+                    
                 }
+
+                isDone = true;
+                isApproved = false;
+                administrator.adminApprove(line, isApproved, isDone);
+
+
+
             }catch(Exception ex){
                 System.out.println(ex.getMessage());
             }
         }
+
+    
 }
 
    

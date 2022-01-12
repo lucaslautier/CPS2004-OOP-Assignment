@@ -95,6 +95,33 @@ public:
         }
     }
 
+    void remNode(T val){
+        int flag = 0;
+        int count = 0;
+        Node<T>* x = this->head_;
+        for(int i = 0; i<this->n;i++)
+        {
+            if(x->value == val)
+            {
+                if(i==this->n-1)
+                {
+                    x->value = x->prev->value;
+                    x->prev = x->prev->prev;
+                    this->n = this->n-1;
+                }
+                else{
+                    x->value = x ->next->value;
+                    x->next = x->next->next;
+                    this->n = this->n-1;
+                }
+                flag++;
+            }
+            x = x->next;
+        }
+        if (flag == 0){
+            cout << endl << "Node does not exist" <<endl <<endl;
+        }
+    }
     //just for checking
 
     void print()
@@ -120,6 +147,7 @@ public:
         }
         cout <<endl<<endl;
     }
+
 
 
 };

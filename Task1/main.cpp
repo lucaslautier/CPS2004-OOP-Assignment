@@ -9,5 +9,7 @@ int main(){
     //cout << s;
     acyclic<int> M(x,s);
     M.print();
+    M.remNode(2);
+    M.print();
     
 }

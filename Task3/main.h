@@ -18,9 +18,11 @@ class myuint{
     }
 
     //to output
-    void displayVec(vector<bool> vec){
-        for(bool j:vec )
-            std::cout << j;
+    void displayVec(){
+       for(int i = bin.size() - 1 ; i >= 0; --i)
+        {
+            cout << bin[i];
+        }
 
         cout << endl;
     }
@@ -116,7 +118,7 @@ class myuint{
         }
         reverse(bin.begin(), bin.end());
 
-        displayVec(bin);
+        //displayVec(bin);
         // for(bool j:bin)
         //     std::cout << j;
         // //check if odd or even
@@ -156,12 +158,60 @@ class myuint{
 
             
         }
-        reverse(tmp.bin.begin(), tmp.bin.end());
-        displayVec(tmp.bin);
+
+        for(int j= 0;j<sizeBits;j++){
+            bin.push_back(0);
+        }
+
+        //reverse(tmp.bin.begin(), tmp.bin.end());
+        //displayVec(tmp.bin);
         
         // for(bool j:tmp.bin)
         //     std::cout << j;
 
+        return tmp;
+    }
+
+    myuint operator - (const myuint& num)
+    {//1001 - 0010
+        this->sizeBits = sizeBits;
+        myuint<T> LHS = *this;
+        myuint<T> tmp ;
+        
+        int cnt = 0;
+        for(int i = sizeBits-1 ; i >= 0 ; --i){
+            
+            LHS.bin[i];
+            num.bin[i];
+            
+            if(LHS.bin[i] - num.bin[i] == 0){
+                tmp.bin.push_back(0);
+                
+            }
+            else if(LHS.bin[i] - num.bin[i] == 1){
+                tmp.bin.push_back(1);
+                
+            }
+            else if(LHS.bin[i] - num.bin[i]  == -1){            
+                tmp.bin.push_back(1);
+                cnt = i - 1;
+                for(cnt = i; cnt>= 0; cnt--){
+                    //cout << cnt << " " << LHS.bin[cnt] << endl;
+                   // cout << LHS.bin[cnt];
+                    if(LHS.bin[cnt] == 0){
+                        LHS.bin[cnt] = 1;
+                    }
+                    else{
+                        LHS.bin[cnt] = 0;
+                        break;
+                    }
+                }
+                
+                
+            }
+            //cout << i;
+        }
+        //reverse(tmp.bin.begin(), tmp.bin.end());
         return tmp;
     }
 
@@ -224,7 +274,7 @@ class myuint{
             tmp.bin.pop_back();
         }
 
-        displayVec(tmp.bin);
+        //displayVec(tmp.bin);
         
         return tmp;
     }
@@ -290,13 +340,13 @@ class myuint{
             counter++;
         }
 
-        displayVec(tmp.bin);
+        //displayVec(tmp.bin);
       
         return tmp;
     }
 
 
-    myuint operator == (const myuint& num){
+    bool operator == (const myuint& num){
         this->sizeBits = sizeBits;
         myuint<T> LHS = *this;
         // myuint<T> tmp ;
@@ -304,17 +354,11 @@ class myuint{
 
         for(int i = 0; i < sizeBits ; i++){
             if(LHS.bin[i] != num.bin[i]){
-                isEqual = false;
+                return false;
             }
         }
 
-        if(isEqual){
-            cout << "The binary values are equal";
-        }
-        else{
-            cout << "The binary values are not equal";
-        }
-        return LHS;
+        return true;
     }
 
 };

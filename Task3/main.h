@@ -7,10 +7,15 @@ using namespace std;
 template <int T>
 
 class myuint{
-    public:
-    int sizeBits = T;
+    private:
     std::vector<bool> bin;
 
+    public:
+    int sizeBits = T;
+    
+    myuint(){
+        
+    }
     //Function to make an integer(decimal) -> binary
     myuint(int num){
         this->sizeBits = sizeBits;
@@ -31,6 +36,8 @@ class myuint{
         //test output
         for(bool j:bin)
             std::cout << j;
+
+        cout<<endl;
     }
 
     string divideString(string num){
@@ -55,7 +62,6 @@ class myuint{
         }
 
         return ans;
-
     }
 
     //switch current digit to ASCII, check if it is odd or even
@@ -104,5 +110,50 @@ class myuint{
         
     }
 
+    myuint operator + (const myuint& num)
+    {
+        myuint<T> LHS = *this;
+        myuint<T> tmp ;
+        int carry = 0;
+        for(int i =bin.size() -1; i >= 0; --i){
+            LHS.bin[i];
+            num.bin[i];
+
+            if(LHS.bin[i] + num.bin[i] + carry == 0){
+                tmp.bin.push_back(0);
+                carry = 0;
+            }
+            else if(LHS.bin[i] + num.bin[i] + carry == 1){
+                tmp.bin.push_back(1);
+                
+                carry = 0;
+            }
+            else if(LHS.bin[i] + num.bin[i] + carry  == 2){
+                tmp.bin.push_back(0);
+                
+                carry = 1;
+            }
+            else if(LHS.bin[i] + num.bin[i] + carry  == 3){
+                tmp.bin.push_back(1);       
+                carry = 1;
+            }
+
+            
+        }
+
+        int j = 0;
+        
+        for(j = tmp.bin.size()-1; j >= 0 ; --j){
+            cout << tmp.bin[j];
+            // cout << "test" ;
+        }
+            
+        // cout << j;
+
+
+        return tmp;
+    }
+
+    
 
 };

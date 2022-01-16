@@ -16,6 +16,15 @@ class myuint{
     myuint(){
         
     }
+
+    //to output
+    void displayVec(vector<bool> vec){
+        for(bool j:vec )
+            std::cout << j;
+
+        cout << endl;
+    }
+
     //Function to make an integer(decimal) -> binary
     myuint(int num){
         this->sizeBits = sizeBits;
@@ -34,11 +43,14 @@ class myuint{
 
         reverse(bin.begin(), bin.end());
         //test output
-        for(bool j:bin)
-            std::cout << j;
+        //displayVec(bin);
+        // for(bool j:bin)
+        //     std::cout << j;
 
-        cout<<endl;
+        // cout<<endl;
     }
+
+    
 
     string divideString(string num){
         //code for that  here
@@ -104,12 +116,14 @@ class myuint{
         }
         reverse(bin.begin(), bin.end());
 
-        for(bool j:bin)
-            std::cout << j;
-        //check if odd or even
-        cout << endl;
+        displayVec(bin);
+        // for(bool j:bin)
+        //     std::cout << j;
+        // //check if odd or even
+        // cout << endl;
     }
 
+    //start overloading operators
     myuint operator + (const myuint& num)
     {
         this->sizeBits = sizeBits;
@@ -143,19 +157,10 @@ class myuint{
             
         }
         reverse(tmp.bin.begin(), tmp.bin.end());
-        for(bool j:tmp.bin)
-            std::cout << j;
-
-        // int j = 0;
+        displayVec(tmp.bin);
         
-        // for(j = tmp.bin.size()-1; j >= 0 ; --j){
-        //     cout << tmp.bin[j];
-        //     // cout << "test" ;
-        // }
-        cout << endl;
-            
-        // cout << j;
-
+        // for(bool j:tmp.bin)
+        //     std::cout << j;
 
         return tmp;
     }
@@ -212,19 +217,15 @@ class myuint{
         //sanity check - shifted left before removing extra bits
         // for(bool j:tmp.bin){
         //     std::cout << j;
-        // }
+        // 
         // cout<<endl;
 
         for(int x = tmp.bin.size(); x > sizeBits; --x){
             tmp.bin.pop_back();
         }
 
-        for(bool j:tmp.bin){
-            std::cout << j;
-        }
-
-        cout << endl;
-
+        displayVec(tmp.bin);
+        
         return tmp;
     }
 
@@ -232,29 +233,88 @@ class myuint{
         this->sizeBits = sizeBits;
         myuint<T> LHS = *this;
         myuint<T> tmp;
+        myuint<T> toAdd;
         int cntA = 0;
         int cntB = 0;
-
-        /
-        for(int i = 0; i < LHS.bin.size(); i++){
+        int counter = 0;
+        //checks if there are any "1"s in binary values
+        for(int i = 0; i < sizeBits; i++){
             if(LHS.bin[i] == 1){
-                cntA += 1;
+                cntA += 1; 
             }
         }
 
-        for(int i = 0; i < num.bin.size(); i++){
+        for(int i = 0; i < sizeBits; i++){
             if(num.bin[i] == 1){
                 cntB += 1;
             }
         }
 
-        //if one of them 
+        //if one of them is all "0", mult will be 0.
         if(cntA > 0 && cntB > 0){
 
+            //do 1* all of the LHS (every 1 * LHS will get the same result), save in tmp
+            for(int i = 0; i < sizeBits; i++)
+            {
+                if(1 * LHS.bin[i] == 1){
+                    tmp.bin.push_back(1);
+                }
+                else{
+                    tmp.bin.push_back(0);
+                }
+            }
+        }
+        else{
+            for(int i = 0; i < sizeBits; i++)
+            {
+               bin.push_back(0);
+            }
         }
 
+        
 
+        //copy into another vector so that they can be added
+        for(int i = 0; i < sizeBits ; i++){
+            toAdd.bin.push_back(tmp.bin[i]);
+        }
+        //sanity check
+        // for(bool j:toAdd.bin){
+        //     std::cout << j;
+        // }
+
+        //with every add, the binary being added has to be shifted left
+        //while loop to cntB (holds amnt. of 1 therefore times an addition needs to happen)
+        while (counter < cntB){ 
+            toAdd << counter;
+            tmp = tmp + toAdd;  
+            counter++;
+        }
+
+        displayVec(tmp.bin);
+      
+        return tmp;
     }
 
+
+    myuint operator == (const myuint& num){
+        this->sizeBits = sizeBits;
+        myuint<T> LHS = *this;
+        // myuint<T> tmp ;
+        bool isEqual = true;
+
+        for(int i = 0; i < sizeBits ; i++){
+            if(LHS.bin[i] != num.bin[i]){
+                isEqual = false;
+            }
+        }
+
+        if(isEqual){
+            cout << "The binary values are equal";
+        }
+        else{
+            cout << "The binary values are not equal";
+        }
+        return LHS;
+    }
 
 };

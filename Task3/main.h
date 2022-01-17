@@ -127,10 +127,11 @@ class myuint{
         myuint<T> tmp ;
         int carry = 0;
         //bin.size()
-        //for(int i =sizeBits -1; i >= 0; --i){
-            for(int i = 0; i < sizeBits; i++){
-            LHS.bin[i];
-            num.bin[i];
+        //read it reverse to start from RHS
+        for(int i =sizeBits -1; i >= 0; --i){
+            // for(int i = 0; i < sizeBits; i++){
+            // LHS.bin[i];
+            // num.bin[i];
 
             if(LHS.bin[i] + num.bin[i] + carry == 0){
                 tmp.bin.push_back(0);
@@ -162,8 +163,8 @@ class myuint{
         //     std::cout << j;
 
         cout << endl;
-
-        //reverse(tmp.bin.begin(), tmp.bin.end());
+        //reverse back
+        reverse(tmp.bin.begin(), tmp.bin.end());
         //displayVec(tmp.bin);
         
         
@@ -177,13 +178,9 @@ class myuint{
         myuint<T> LHS = *this;
         myuint<T> tmp ;
         
-        // reverse(LHS.bin.begin(), LHS.bin.end());
-        // reverse(tmp.bin.begin(), tmp.bin.end());
         int cnt = 0;
         for(int i = sizeBits-1 ; i > 0; i--){
             
-            // cout << LHS.bin[i];
-            // cout << num.bin[i];
             
             if(LHS.bin[i] - num.bin[i] == 0){
                 tmp.bin.push_back(0);
@@ -197,8 +194,7 @@ class myuint{
                 tmp.bin.push_back(1);
                 cnt = i - 1;
                 for(cnt ; cnt >= 0; cnt--){
-                    //cout << cnt << " " << LHS.bin[cnt] << endl;
-                   // cout << LHS.bin[cnt];
+                   
                     if(LHS.bin[cnt] == 0){
                         LHS.bin[cnt] = 1;
                     }
@@ -230,19 +226,12 @@ class myuint{
         for(int j = 0; j < num; j++){
             tmp.bin.push_back(0);
         }
-        // for(bool j:tmp.bin){
-        //     std::cout << j;
-        // }
-        // cout << endl;
+        
 
         //push in original binary to tmp
         for(int i = 0; i < sizeBits; i++){
             tmp.bin.push_back(LHS.bin[i]);
         }
-        // for(bool j:tmp.bin){
-        //     std::cout << j;
-        // }
-        // cout << endl;
         
         
         for(int x = tmp.bin.size(); x > sizeBits; --x){
@@ -259,45 +248,25 @@ class myuint{
         myuint<T> tmp ;
         this->sizeBits = sizeBits;
         int i = 0;
-        //  for(bool x:LHS.bin){
-        //     std::cout << x;
-        // }
-        //cout << endl;
-        //push original binary into tmp
+        
         for(i = 0; i < sizeBits ; i++){
             tmp.bin.push_back(LHS.bin[i]);
         }
-        // for(bool x:tmp.bin){
-        //     std::cout << x;
-        // }
-        // cout << endl;
-
-        //push 0s into tmp
+        
         for(int j = 0; j < num; j++){
             tmp.bin.push_back(0);
         }
-        // for(bool x:tmp.bin){
-        //     std::cout << x;
-        // }
-        // cout << endl;
-        
+  
         //reverse so that digits to be popped are at the back
         reverse(tmp.bin.begin(), tmp.bin.end());
-        // for(bool x:tmp.bin){
-        //     std::cout << x;
-        // }
-        // cout << endl;
-        //pop the amount required to get back to size requested
+       
         for(int x = tmp.bin.size(); x > sizeBits; --x){
             tmp.bin.pop_back();
         }
 
         //reverse back to original
         reverse(tmp.bin.begin(), tmp.bin.end());
-        // cout << "in tmp" << endl;
-        // for(bool x:tmp.bin){
-        //     std::cout << x;
-        // }
+        
         return tmp;
     }
 
@@ -306,8 +275,7 @@ class myuint{
         myuint<T> LHS = *this;
         myuint<T> tmp;
         myuint<T> tmp2;
-        // reverse(LHS.bin.begin(), LHS.bin.end());
-        // reverse(tmp.bin.begin(), tmp.bin.end());
+    
         myuint<T> toAdd;
         int cntA = 0;
         int cntB = 0;
@@ -351,44 +319,19 @@ class myuint{
             }
         }
 
-        //sanity check - good till here
-        // cout <<"orig tmp" << endl;
-        // for(bool x:tmp.bin)
-        //     std::cout << x;
-        // cout << endl;
 
         //copy into another vector so that they can be added
         // for(int i = 0; i < sizeBits ; i++){
         for(int i = 0 ; i < sizeBits; i++){
             toAdd.bin.push_back(tmp.bin[i]);
         }
-        //sanity check
-        // cout <<"to add" << endl;
-        // for(bool x:toAdd.bin){
-        //     std::cout << x;
-        // }
-
-        //reverse(bin.begin(), bin.end());
-        
-
         
 
         //with every add, the binary being added has to be shifted left
-        //while loop to cntB (holds amnt. of 1 therefore times an addition needs to happen)
+        //while loop to cntB (holds amnt. of 1s therefore times an addition needs to happen)
         while (counter < cntB){ 
             
             tmp2 = toAdd << 1;
-            // cout << endl;
-            // for(bool x:tmp2.bin)
-            // {
-            //     std::cout << x;
-            // }
-            // cout <<endl;
-            // for(bool x:tmp.bin)
-            // {
-            //     std::cout << x;
-            // }
-            // cout <<endl;
             tmp = tmp + tmp2;
             
             counter++;
@@ -455,6 +398,25 @@ class myuint{
         if(pos1<pos2){
             return true;
         }
+        // else if(pos1 == pos2){
+        //     for(int i = pos1 + 1; i < sizeBits; i++){
+        //         if(LHS[i].bin[i] == 1){
+        //             pos1 = i;
+        //             break;
+        //         }    
+        //     }
+        //     for(int i = pos2 + 1; i < sizeBits; i++){
+        //         if(num[i].bin[i] == 1){
+        //             pos2 = i;
+        //             break;
+        //         }    
+        //     }
+
+        //     if(pos1<pos2){
+        //         return true;
+        //     }
+            
+        // }
 
         return false;
     }

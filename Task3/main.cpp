@@ -8,8 +8,8 @@ int main(){
 
     //INVERT
     cout << " Output: " << endl;
-    myuint<8>OI(9);      //<4> - No of bits || <5> Decimal to be converted
-    myuint<8>T(2);
+    myuint<8>OI(5);      //<4> - No of bits || <5> Decimal to be converted
+    myuint<8>T(3);
     myuint<4>OS("2");   //changes string to binary
 
     OI.displayVec();
@@ -18,8 +18,8 @@ int main(){
     cout << "-----------------" << endl;
     // cout << "Addition: " << endl;
 
-    //just change operator to what you wnt
-    myuint<8>A = OI >> 3;
+    //just change operator to what you want
+    myuint<8>A = OI * T;
     A.displayVec();
     //A.displayVec();
     

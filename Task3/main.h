@@ -247,9 +247,6 @@ class myuint{
             tmp.bin.pop_back();
         }
 
-
-        
-
         cout << endl;
 
         return tmp;
@@ -260,22 +257,45 @@ class myuint{
         myuint<T> tmp ;
         this->sizeBits = sizeBits;
         int i = 0;
-        for(i <sizeBits - 1; i < sizeBits ; i++){
+        //  for(bool x:LHS.bin){
+        //     std::cout << x;
+        // }
+        //cout << endl;
+        //push original binary into tmp
+        for(i = 0; i < sizeBits ; i++){
             tmp.bin.push_back(LHS.bin[i]);
         }
+        // for(bool x:tmp.bin){
+        //     std::cout << x;
+        // }
+        // cout << endl;
 
-        //sanity check - shifted left before removing extra bits
-        for(bool j:tmp.bin)
-            std::cout << j;
+        //push 0s into tmp
+        for(int j = 0; j < num; j++){
+            tmp.bin.push_back(0);
+        }
+        // for(bool x:tmp.bin){
+        //     std::cout << x;
+        // }
+        // cout << endl;
         
-        cout<<endl;
-
+        //reverse so that digits to be popped are at the back
+        reverse(tmp.bin.begin(), tmp.bin.end());
+        // for(bool x:tmp.bin){
+        //     std::cout << x;
+        // }
+        // cout << endl;
+        //pop the amount required to get back to size requested
         for(int x = tmp.bin.size(); x > sizeBits; --x){
             tmp.bin.pop_back();
         }
 
-        //displayVec(tmp.bin);
-        
+        //reverse back to original
+        reverse(tmp.bin.begin(), tmp.bin.end());
+        // cout << "in tmp" << endl;
+        // for(bool x:tmp.bin){
+        //     std::cout << x;
+        // }
         return tmp;
     }
 
@@ -283,14 +303,16 @@ class myuint{
         this->sizeBits = sizeBits;
         myuint<T> LHS = *this;
         myuint<T> tmp;
+        myuint<T> tmp2;
         // reverse(LHS.bin.begin(), LHS.bin.end());
         // reverse(tmp.bin.begin(), tmp.bin.end());
         myuint<T> toAdd;
         int cntA = 0;
         int cntB = 0;
-        int counter = 0;
+        int counter = 1;
         int toShift = 1;
         int j = 0;
+
         //checks if there are any "1"s in binary values
         for(int i = 0; i < sizeBits; i++){
             if(LHS.bin[i] == 1){
@@ -308,7 +330,7 @@ class myuint{
         if(cntA > 0 && cntB > 0){
             
             //do 1* all of the LHS (every 1 * LHS will get the same result), save in tmp
-            for(j = sizeBits-1; j >= 0; j--)
+            for(j = 0; j < sizeBits ; j++)
             {
                 if(1 * LHS.bin[j] == 1){
                     tmp.bin.push_back(1);
@@ -318,8 +340,9 @@ class myuint{
                 }
             }
         }
+        //fill with 0s if one of them is all 0s (n * 0 = 0)
         else{
-            for(int i = 0; i < sizeBits; i++)
+            for(int i = 0;i<sizeBits ; i++)
             {
                tmp.bin.push_back(0);
                return tmp;
@@ -327,16 +350,18 @@ class myuint{
         }
 
         //sanity check - good till here
-        // for(bool x:tmp.bin)
-        //     std::cout << x;
-        // cout << endl;
+        cout <<"orig tmp" << endl;
+        for(bool x:tmp.bin)
+            std::cout << x;
+        cout << endl;
 
         //copy into another vector so that they can be added
         // for(int i = 0; i < sizeBits ; i++){
-        for(int i = sizeBits -1 ; i >= 0; i--){
+        for(int i = 0 ; i < sizeBits; i++){
             toAdd.bin.push_back(tmp.bin[i]);
         }
         //sanity check
+        cout <<"to add" << endl;
         for(bool x:toAdd.bin){
             std::cout << x;
         }
@@ -350,17 +375,19 @@ class myuint{
         //while loop to cntB (holds amnt. of 1 therefore times an addition needs to happen)
         while (counter < cntB){ 
             
-            toAdd << 1;
-
-            for(bool x:toAdd.bin){
+            tmp2 = toAdd << 1;
+            cout << endl;
+            for(bool x:tmp2.bin)
+            {
                 std::cout << x;
             }
-            cout << endl;
-
-
-
-
-            tmp = tmp + toAdd;
+            cout <<endl;
+            for(bool x:tmp.bin)
+            {
+                std::cout << x;
+            }
+            cout <<endl;
+            tmp = tmp + tmp2;
             
             counter++;
         }

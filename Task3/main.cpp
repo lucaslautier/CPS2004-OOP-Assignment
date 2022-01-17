@@ -7,18 +7,22 @@
 int main(){
 
     //INVERT
-    cout << "Normal Output: " << endl;
-    myuint<4>OI(8 );      //<4> - No of bits || <5> Decimal to be converted
-    myuint<4>T(4 );
-    myuint<4>OS("2");
+    cout << " Output: " << endl;
+    myuint<8>OI(9);      //<4> - No of bits || <5> Decimal to be converted
+    myuint<8>T(2);
+    myuint<4>OS("2");   //changes string to binary
 
+    OI.displayVec();
+    T.displayVec();
+    OS.displayVec();
+    cout << "-----------------" << endl;
     // cout << "Addition: " << endl;
 
     //just change operator to what you wnt
-    myuint<4>A = OI - T;
+    myuint<8>A = OI >> 3;
     A.displayVec();
-    cout << endl;
-
+    //A.displayVec();
+    
     // cout << "Subtraction: "<< endl;
     // myuint<4>SUB1(4);
     // myuint<4>SUB2(16);

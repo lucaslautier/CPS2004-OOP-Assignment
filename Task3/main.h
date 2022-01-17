@@ -491,7 +491,7 @@ class myuint{
         return cnt;
     }
 
-    int operator % (const myuint& num){
+    myuint operator % (const myuint& num){
         this->sizeBits = sizeBits;
         myuint<T> LHS = *this;
         myuint<T> tmp;
@@ -502,17 +502,17 @@ class myuint{
         }
 
         if(LHS == num){
-            rem = 0;
-            cout << rem;
-            return rem;
+            LHS = LHS - num;
+            return LHS;
         }
-        else {
-            while(LHS != num){
-                rem += 1;
-                rem = LHS - num;
-            }
-        }
-        return rem;
+        //ho to get remainder?
+        
+        // if((LHS > num) == false){
+        //      return LHS;
+        //         //rem = LHS - num;
+        //     }
+        // }
+        return LHS;
     }
 
 };

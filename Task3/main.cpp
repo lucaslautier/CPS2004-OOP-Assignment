@@ -8,7 +8,7 @@ int main(){
 
     //INVERT
     cout << " Output: " << endl;
-    myuint<8>OI(5);      //<4> - No of bits || <5> Decimal to be converted
+    myuint<8>OI(9);      //<4> - No of bits || <5> Decimal to be converted
     myuint<8>T(3);
     myuint<4>OS("2");   //changes string to binary
 
@@ -19,8 +19,26 @@ int main(){
     // cout << "Addition: " << endl;
 
     //just change operator to what you want
-    myuint<8>A = OI * T;
+    myuint<8>A = OI % T;
+    cout << endl;
     A.displayVec();
+
+    //TEST CASES FOR BOOLEANS
+    // if(OI > T){
+    //     cout << "LHS larger";
+    // }else{
+    //     cout << "LHS smaller";
+    // }
+    // cout << endl;
+    // if(OI != T){
+    //     cout << "Not Equal";
+    //  }
+    //  else{
+    //     cout << "Equal";
+    //  }
+
+
+
     //A.displayVec();
     
     // cout << "Subtraction: "<< endl;

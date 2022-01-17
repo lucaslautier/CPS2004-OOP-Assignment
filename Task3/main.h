@@ -154,8 +154,8 @@ class myuint{
             
         }
 
-        for(int j= 0;j<sizeBits;j++){
-            bin.push_back(0);
+        for(int j= tmp.bin.size();j<sizeBits;j++){
+            tmp.bin.push_back(0);
         }
 
         // for(bool j:tmp.bin)
@@ -212,7 +212,9 @@ class myuint{
             }
             //cout << i;
         }
-      
+        for(int j= tmp.bin.size();j<sizeBits;j++){
+            tmp.bin.push_back(0);
+        }
         cout << endl;
         reverse(tmp.bin.begin(), tmp.bin.end());
         return tmp;
@@ -350,10 +352,10 @@ class myuint{
         }
 
         //sanity check - good till here
-        cout <<"orig tmp" << endl;
-        for(bool x:tmp.bin)
-            std::cout << x;
-        cout << endl;
+        // cout <<"orig tmp" << endl;
+        // for(bool x:tmp.bin)
+        //     std::cout << x;
+        // cout << endl;
 
         //copy into another vector so that they can be added
         // for(int i = 0; i < sizeBits ; i++){
@@ -361,14 +363,14 @@ class myuint{
             toAdd.bin.push_back(tmp.bin[i]);
         }
         //sanity check
-        cout <<"to add" << endl;
-        for(bool x:toAdd.bin){
-            std::cout << x;
-        }
+        // cout <<"to add" << endl;
+        // for(bool x:toAdd.bin){
+        //     std::cout << x;
+        // }
 
         //reverse(bin.begin(), bin.end());
         
-        cout << endl << "---------------" << endl;   
+
         
 
         //with every add, the binary being added has to be shifted left
@@ -376,17 +378,17 @@ class myuint{
         while (counter < cntB){ 
             
             tmp2 = toAdd << 1;
-            cout << endl;
-            for(bool x:tmp2.bin)
-            {
-                std::cout << x;
-            }
-            cout <<endl;
-            for(bool x:tmp.bin)
-            {
-                std::cout << x;
-            }
-            cout <<endl;
+            // cout << endl;
+            // for(bool x:tmp2.bin)
+            // {
+            //     std::cout << x;
+            // }
+            // cout <<endl;
+            // for(bool x:tmp.bin)
+            // {
+            //     std::cout << x;
+            // }
+            // cout <<endl;
             tmp = tmp + tmp2;
             
             counter++;
@@ -411,6 +413,106 @@ class myuint{
         }
 
         return true;
+    }
+
+    bool operator != (const myuint& num){
+        this->sizeBits = sizeBits;
+        myuint<T> LHS = *this;
+        // myuint<T> tmp ;
+        bool isEqual = false;
+
+        for(int i = 0; i < sizeBits ; i++){
+            if(LHS.bin[i] != num.bin[i]){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    
+    bool operator > (const myuint& num){
+        this->sizeBits = sizeBits;
+        myuint<T> LHS = *this;
+        int pos1 = 0;
+        int pos2 = 0;
+
+        for(int i = 0; i < sizeBits; i++){
+            if(LHS.bin[i] == 1){
+                pos1 = i;
+                //cout << pos1;
+                break;
+            }
+        }
+        for(int i = 0; i < sizeBits; i++){
+            if(num.bin[i] == 1){
+                pos2 = i;
+                //cout << pos2;
+                break;
+            }
+        }
+        //smaller index, larger number (most left-most)
+        if(pos1<pos2){
+            return true;
+        }
+
+        return false;
+    }
+
+    int operator / (const myuint& num){
+        this->sizeBits = sizeBits;
+        myuint<T> LHS = *this;
+        myuint<T> tmp;
+        // for(bool x:LHS.bin)
+        //     {
+        //         std::cout << x;
+        //     }
+        int cnt = 0;
+
+        while((LHS > num) == true){
+            LHS = LHS - num;
+            // for(bool x:LHS.bin)
+            // {
+            //     std::cout << x;
+            // }
+            // cout <<endl;
+            cnt++;
+        }
+        if(LHS == num){
+            cnt+= 1;
+            cout << cnt;
+            return cnt;
+        }
+        else{
+            cout << cnt;
+        }
+        
+
+        return cnt;
+    }
+
+    int operator % (const myuint& num){
+        this->sizeBits = sizeBits;
+        myuint<T> LHS = *this;
+        myuint<T> tmp;
+        
+        int rem = 0;
+        while((LHS > num) == true){
+            LHS = LHS - num;
+        }
+
+        if(LHS == num){
+            rem = 0;
+            cout << rem;
+            return rem;
+        }
+        else {
+            while(LHS != num){
+                rem += 1;
+                rem = LHS - num;
+            }
+        }
+        return rem;
     }
 
 };

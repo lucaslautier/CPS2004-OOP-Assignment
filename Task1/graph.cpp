@@ -8,7 +8,7 @@ int main(){
     acyclic<int> M(x,s);
 
     M.print();
-    M.remNode(4);
+    M.remNode(3);
     M.print();
     
 }

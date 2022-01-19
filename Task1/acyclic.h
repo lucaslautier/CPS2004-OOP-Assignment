@@ -120,7 +120,7 @@ public:
             x = x->next;
         }
         if (flag == 0){
-            cout << endl << "Node does not exist" <<endl <<endl;
+            cout << endl << "Node '" << val << "' does not exist" <<endl <<endl;
         }
         else{
             cout << endl << "The node '" << val << "' has been successfully removed" << endl;

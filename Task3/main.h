@@ -3,7 +3,8 @@
 #include <bits/stdc++.h>
 #include <string>
 using namespace std;
-
+#include <type_traits>
+static_assert(03301 == 1729);
 template <int T>
 
 class myuint{
@@ -12,7 +13,7 @@ class myuint{
 
     public:
     int sizeBits = T;
-    
+    bool isArbitrary;
     myuint(){
         
     }
@@ -25,9 +26,15 @@ class myuint{
         cout << endl;
     }
 
+
     //Function to make an integer(decimal) -> binary
     myuint(int num){
         this->sizeBits = sizeBits;
+        
+        isArbitrary = arbitraryLen(sizeBits);
+        
+        
+        assert(("The number is not a power of 2",isArbitrary == true ));
         int i = 0;
 
         //calculates if current bit gives 0 or 1, inputs into vec
@@ -50,7 +57,18 @@ class myuint{
         // cout<<endl;
     }
 
-    
+    bool arbitraryLen(int size){
+        if(size == 0){
+            return false;
+        }
+        while(size != 1){
+            if(size%2 != 0){
+                return false;
+            }
+            size = size/2;
+        }
+        return true;
+    }
 
     string divideString(string num){
         //code for that  here
@@ -60,7 +78,7 @@ class myuint{
         int idx = 0;
         int temp = num[idx] - '0';
 
-        while(temp < divisor)
+        while(temp < divisor)   
         {
             temp = temp*10 + (num[++idx] - '0');
         }
@@ -90,6 +108,12 @@ class myuint{
     {
      //code for that here
         this->sizeBits = sizeBits;  
+        isArbitrary = arbitraryLen(sizeBits);
+        
+        
+        assert(("The number is not a power of 2",isArbitrary == true ));
+
+
         bool isEven = false;
         int size = s.size();  
         int i = 0;

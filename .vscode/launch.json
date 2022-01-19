@@ -35,9 +35,9 @@
         ""
       ],
       "stopAtEntry": false,
-      "cwd": "c:/Users/Lucas/Desktop/CPS2004-OOP-Assignment/Task3",
+      "cwd": "c:/Users/Lucas/Desktop/CPS2004-OOP-Assignment/Task1",
       "environment": [],
-      "program": "c:/Users/Lucas/Desktop/CPS2004-OOP-Assignment/Task3/build/Debug/outDebug",
+      "program": "c:/Users/Lucas/Desktop/CPS2004-OOP-Assignment/Task1/build/Debug/outDebug",
       "internalConsoleOptions": "openOnSessionStart",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",

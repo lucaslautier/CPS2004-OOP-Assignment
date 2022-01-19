@@ -23,7 +23,7 @@ private:
     int n;
     Node<T>* head_ = NULL;
     Node<T>* tail_ = NULL;
-    Node<T>* itr = NULL;
+    
 
 public:
 
@@ -64,7 +64,7 @@ public:
             }
             else
             {
-                cout << "Value already exists, adding this will cause a cycle!" << endl;
+                cout << "Value '"<< value << "' already exists, adding this will cause a cycle!" << endl;
             }   
         }
     }
@@ -108,6 +108,7 @@ public:
                     x->value = x->prev->value;
                     x->prev = x->prev->prev;
                     this->n = this->n-1;
+                    
                 }
                 else{
                     x->value = x ->next->value;
@@ -120,6 +121,9 @@ public:
         }
         if (flag == 0){
             cout << endl << "Node does not exist" <<endl <<endl;
+        }
+        else{
+            cout << endl << "The node '" << val << "' has been successfully removed" << endl;
         }
     }
     //just for checking
@@ -147,7 +151,5 @@ public:
         }
         cout <<endl<<endl;
     }
-
-
 
 };

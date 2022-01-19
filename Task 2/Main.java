@@ -383,59 +383,6 @@ public class Main{
         }
     }
 
-    //SELL CRYPTO
-    // public static void sellCrypto(Currencies currCrypto){
-    //     Scanner s = new Scanner(System.in);
-    //     String cryptoFile = "crypto.txt";
-
-    //     try{
-            
-    //         Path path = Paths.get(cryptoFile.toString());
-    //         InputStream input = Files.newInputStream(path);
-    //         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-
-    //         System.out.println("What crypto would you like to sell: ");
-    //         String crypto = s.nextLine();
-    //         System.out.println("How much would you like to sell (in FIAT): ");
-    //         double value = s.nextDouble();
-        
-    //         String _temp = null;
-    //         String _crypto = currCrypto.getCrypto();
-    //         String _value = currCrypto.getValue();
-    //         boolean foundCrypto = false;
-    //         double doubleValue = 0.0;
-    //         while((_temp = reader.readLine()) != null)
-    //         {
-    //             String[] cryptos = _temp.split(",");
-    //             _crypto = cryptos[0];
-                
-
-    //             if(_crypto.equals(crypto)){
-    //                 foundCrypto = true;
-    //                 _value = cryptos[1];
-    //                 doubleValue = Double.parseDouble(_value);   
-    //                 break;                
-    //             }
-                
-    //         }
-
-
-        
-    //         //INCREASE MONEY IN ACCOUNT
-    //         if(foundCrypto == true){
-    //             double cryptoSold = value /doubleValue;
-    //             System.out.println("You have successfully sold "+cryptoSold+" in "+_crypto);
-    //         }
-    //         else{
-    //             System.out.println("The crypto you are trying to buy does not exist in this system.");
-    //         }
-            
-    //     }catch(Exception ex){
-    //         System.out.print(ex.getMessage());
-    //     }
-    // }
-    ////======================================================DONE=============
-
 
     //FROM HERE - ADMIN METHODS
     public static void admin(){ 

@@ -156,6 +156,7 @@ public class Main{
         String filename = "waiting.txt";
         String file = "account.txt";
         long lines = 0;
+        long waitLines = 0;
         //System.out.println(new File("account.txt").getAbsoluteFile());
         
             try{
@@ -165,6 +166,7 @@ public class Main{
                 // setup for "waiting.txt"
                 Path path = Paths.get(filename.toString()); 
                 OutputStream output = new BufferedOutputStream(Files.newOutputStream(path, APPEND));
+                BufferedReader waiting = new BufferedReader(new FileReader(path.toString()));
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output));
                 Scanner sc = new Scanner(path);
 
@@ -174,38 +176,27 @@ public class Main{
                 Scanner scA = new Scanner(accPath);
                 
                 long accNo = 0;
-                // boolean isNull = true;
                 
-
-
-                lines = Files.lines(accPath).count();
-                System.out.println(lines);
-                accNo = lines;
-                // checks if "account.txt" is empty
-                //yes - this is the first account, start counting from 0
-
+                
                 if(acnt.readLine() == null){
                     // while(sc.hasNextLine())
                     // {
                     lines = Files.lines(path).count();
                     accNo = lines;
-                        // sc.nextLine();
-                        // accNo++;
-                    //}
+                        
                 }
                 else{
                     lines = Files.lines(accPath).count();
-                    accNo = lines;
+                    if(waiting.readLine() == null){             
+                      accNo = lines;
+                        
+                    }
+                    else{
+                        waitLines = Files.lines(path).count();
+                        accNo = lines + waitLines;
+                        
+                    }
                 }
-
-                // //no - other accounts have been made, so use the account number after the one in "account.txt"
-                // }else{
-                //     while(scA.hasNextLine())
-                //     {
-                //         scA.nextLine();
-                //         accNo++;
-                //     }
-                // }
 
                 tmpUser.setAccNo(accNo);
                 sc.close();

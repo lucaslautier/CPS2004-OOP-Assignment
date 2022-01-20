@@ -4,14 +4,13 @@
 // import java.io.InputStreamReader;
 // import java.io.OutputStream;
 // import java.io.OutputStreamWriter;
-// import java.nio.file.Files;
-
 import java.util.*;
 import java.nio.file.*;
 import java.io.*;
 import static java.nio.file.StandardOpenOption.*;
 import java.nio.charset.*;
 import java.util.stream.*;
+import java.lang.StringBuffer;
 
 public class Main{
 
@@ -24,7 +23,9 @@ public class Main{
         Scanner s = new Scanner(System.in);
 
         int option = 0;             // what option for the menu
-        int buyOrSell = 10;  
+        int buyOrSell = 10; 
+        String username = " ";
+        String password = " ";
         double money;       //checks if the user will go into 'exchangeCrypto' to buy or sell
         long accountNo;             //holds current acc no
         do{
@@ -45,12 +46,15 @@ public class Main{
                 //accountNo = login(user);
                 login(user);
                 accountNo = user.getAccNo();
-                buyOrSell = 0;
-                System.out.println(accountNo);
+                username = user.getUser();
+                password = user.getPass();
                 money = user.getMoney();
+                buyOrSell = 0;
+               // System.out.println(accountNo);
+                
                 //System.out.println(money); sanity check
                 if(user.getLogBool() == true){
-                    exchangeCrypto(currCrypto, user, accountNo,buyOrSell,money);
+                    exchangeCrypto(currCrypto, user, accountNo,buyOrSell,money,username,password);
                 }
                 
                 break;
@@ -64,7 +68,7 @@ public class Main{
                 money = user.getMoney();
                 //System.out.println(money); sanity check
                 if(user.getLogBool() == true){
-                    exchangeCrypto(currCrypto, user, accountNo, buyOrSell,money);
+                    exchangeCrypto(currCrypto, user, accountNo, buyOrSell,money,username,password);
                 }
                 
                 break;
@@ -120,6 +124,8 @@ public class Main{
                         //_money = Double.parseDouble(account[3]);
                         tmpUser.setAccNo(Long.parseLong(account[0]));
                         tmpUser.setMoney(Double.parseDouble(account[3]));
+                        tmpUser.setUser(username);
+                        tmpUser.setPass(password);
                         tmpUser.setLogBool(found);
                     }
                 }
@@ -289,7 +295,7 @@ public class Main{
 
 
     //BUY CRYPTO
-    public static void exchangeCrypto(Currencies currCrypto, User user, long pAccNo, int buySell, double money ){
+    public static void exchangeCrypto(Currencies currCrypto, User user, long pAccNo, int buySell, double money, String username, String password ){
 
         Scanner s = new Scanner(System.in);
         String cryptoFile = "crypto.txt";
@@ -307,10 +313,22 @@ public class Main{
             OutputStream output = new BufferedOutputStream(Files.newOutputStream(portpath, APPEND));
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output));
             Scanner sc = new Scanner(portpath);
+            
 
-            //Path accpath = Paths.get(accFile.toString());
+            Scanner scA = new Scanner(new File(accFile));
+            StringBuffer buffer = new StringBuffer();
+            while(scA.hasNextLine()){
+                buffer.append(scA.nextLine()+System.lineSeparator());
+            }
+            
+            String fileContents = buffer.toString();
+            scA.close();
+            //InputStream accInput = Files.newInputStream(accFile);
+            // BufferedReader accReader = new BufferedReader(new InputStreamReader(accInput));
+            
+            // 
+            
 
-           
             if(buySell == 0){
                 System.out.println("What crypto would you like to buy: ");
                 crypto = s.nextLine();
@@ -324,8 +342,10 @@ public class Main{
                 value = s.nextDouble();
             }
             
-
+            //used to change account details (decreasing/increasing money)
             String _temp = null;
+            String _acc = String.valueOf(pAccNo);
+            //relating to exchanging of crypto
             String _crypto = currCrypto.getCrypto();
             String _value = currCrypto.getValue();
             boolean foundCrypto = false;
@@ -335,6 +355,7 @@ public class Main{
                 String[] cryptos = _temp.split(",");
                 _crypto = cryptos[0];
                 
+
 
                 if(_crypto.equals(crypto)){
                     foundCrypto = true;
@@ -347,8 +368,20 @@ public class Main{
             //DECREASE MONEY FROM ACCOUNT
             if(buySell == 0)
             {
-                if(money - value >= 0){
+                double newMoney = money - value;
+                if(newMoney >= 0){
                     if(foundCrypto == true){
+                        //change money in account    
+                        String toReplace = _acc+","+username+","+password+","+money;
+                        String replacement =  _acc+","+username+","+password+","+newMoney;
+                        //System.out.println(toReplace);
+                        //System.out.println(replacement);
+                        fileContents = fileContents.replaceAll(toReplace, replacement);
+                        FileWriter accWriter = new FileWriter(accFile);
+                        accWriter.append(fileContents);
+                        accWriter.flush();
+                            
+                        //show the user crypto has been bought
                         double cryptoBought = value /doubleValue;
                         System.out.println("You have successfully purchased "+cryptoBought+" in "+_crypto);
                         
@@ -367,13 +400,30 @@ public class Main{
             }
             else
             {
-                if(foundCrypto == true){
-                    double cryptoSold = value /doubleValue;
-                    System.out.println("You have successfully sold "+cryptoSold+" in "+_crypto);
-                }
-                else{
-                    System.out.println("The crypto you are trying to buy does not exist in this system.");
-                }
+               
+                double newMoney = money + value;
+                //if(newMoney >= 0){ //maybe check for crypto amnt
+                    if(foundCrypto == true){
+                        //decrease money from account
+                        String toReplace = _acc+","+username+","+password+","+money;
+                        String replacement =  _acc+","+username+","+password+","+newMoney;
+                        //System.out.println(toReplace);
+                        //System.out.println(replacement);
+                        fileContents = fileContents.replaceAll(toReplace, replacement);
+                        FileWriter accWriter = new FileWriter(accFile);
+                        accWriter.append(fileContents);
+                        accWriter.flush();
+
+                        //confirm that user has sold crypto
+                        double cryptoSold = value /doubleValue;
+                        System.out.println("You have successfully sold "+cryptoSold+" in "+_crypto);
+                        
+                    }
+                    else{
+                        System.out.println("The crypto you are trying to buy does not exist in this system.");
+                    }
+               // }
+                
             }
             
             

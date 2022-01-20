@@ -26,12 +26,10 @@ public class Main{
         int option = 0;             // what option for the menu
         int buyOrSell = 10;  
         double money;       //checks if the user will go into 'exchangeCrypto' to buy or sell
-        boolean exit = false;
         long accountNo;             //holds current acc no
         do{
-        //CHANGE MENU TO:
-        //1. CREATE 2.BUY 3.SELL 4.EXIT
-        //BUY & SELL - HAVE LOGIN THEN CALL METHOD
+        System.out.println();
+        System.out.println("----------------------------------------------");
         System.out.println("Enter what option you would like to choose");
         System.out.println("1. Create Account");
         System.out.println("2. Buy Crypto");
@@ -54,7 +52,7 @@ public class Main{
                 if(user.getLogBool() == true){
                     exchangeCrypto(currCrypto, user, accountNo,buyOrSell,money);
                 }
-               
+                
                 break;
             
             case 3:
@@ -68,11 +66,12 @@ public class Main{
                 if(user.getLogBool() == true){
                     exchangeCrypto(currCrypto, user, accountNo, buyOrSell,money);
                 }
+                
                 break;
             
             case 4:
-                exit = true;
                 s.close();
+                System.exit(1);  
                 break;
             
             case 99:
@@ -295,7 +294,7 @@ public class Main{
         Scanner s = new Scanner(System.in);
         String cryptoFile = "crypto.txt";
         String portfolioFile = "portfolio.txt";
-
+        String accFile = "account.txt";
         String crypto = " ";
         double value = 0.0;
 
@@ -309,6 +308,9 @@ public class Main{
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output));
             Scanner sc = new Scanner(portpath);
 
+            //Path accpath = Paths.get(accFile.toString());
+
+           
             if(buySell == 0){
                 System.out.println("What crypto would you like to buy: ");
                 crypto = s.nextLine();
@@ -345,17 +347,23 @@ public class Main{
             //DECREASE MONEY FROM ACCOUNT
             if(buySell == 0)
             {
-                if(foundCrypto == true){
-                    double cryptoBought = value /doubleValue;
-                    System.out.println("You have successfully purchased "+cryptoBought+" in "+_crypto);
-                    
-                    writer.write(pAccNo+","+ cryptoBought + "," + _crypto);
-                    writer.newLine();
-                    writer.close();
+                if(money - value >= 0){
+                    if(foundCrypto == true){
+                        double cryptoBought = value /doubleValue;
+                        System.out.println("You have successfully purchased "+cryptoBought+" in "+_crypto);
+                        
+                        writer.write(pAccNo+","+ cryptoBought + "," + _crypto);
+                        writer.newLine();
+                        writer.close();
+                    }
+                    else{
+                        System.out.println("The crypto you are trying to buy does not exist in this system.");
+                    }
                 }
                 else{
-                    System.out.println("The crypto you are trying to buy does not exist in this system.");
+                    System.out.println("You do not have enough money to make this purchase");
                 }
+                
             }
             else
             {
@@ -367,6 +375,7 @@ public class Main{
                     System.out.println("The crypto you are trying to buy does not exist in this system.");
                 }
             }
+            
             
 
         }catch(Exception ex){

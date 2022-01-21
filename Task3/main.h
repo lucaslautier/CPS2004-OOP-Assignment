@@ -5,8 +5,8 @@
 using namespace std;
 #include <type_traits>
 static_assert(03301 == 1729);
-template <int T>
 
+template <int T>
 class myuint{
     private:
     std::vector<bool> bin;
@@ -24,6 +24,21 @@ class myuint{
             std::cout << j;
 
         cout << endl;
+    }
+    
+    //to convert to int
+    void convert_to(){
+        int decValue = 0;
+        int power = sizeBits-1;
+
+        for(bool j:bin){
+            if(j == true){
+                decValue = decValue + pow(2,power);
+            }
+            power--;
+        }
+        cout << decValue <<endl;
+
     }
 
 
@@ -49,12 +64,7 @@ class myuint{
         }
 
         reverse(bin.begin(), bin.end());
-        //test output
-        //displayVec(bin);
-        // for(bool j:bin)
-        //     std::cout << j;
-
-        // cout<<endl;
+        
     }
 
     bool arbitraryLen(int size){
@@ -153,10 +163,7 @@ class myuint{
         //bin.size()
         //read it reverse to start from RHS
         for(int i =sizeBits -1; i >= 0; --i){
-            // for(int i = 0; i < sizeBits; i++){
-            // LHS.bin[i];
-            // num.bin[i];
-
+           
             if(LHS.bin[i] + num.bin[i] + carry == 0){
                 tmp.bin.push_back(0);
                 carry = 0;
@@ -188,10 +195,7 @@ class myuint{
 
         cout << endl;
         //reverse back
-        reverse(tmp.bin.begin(), tmp.bin.end());
-        //displayVec(tmp.bin);
-        
-        
+        reverse(tmp.bin.begin(), tmp.bin.end());    
 
         return tmp;
     }
@@ -360,8 +364,6 @@ class myuint{
             
             counter++;
         }
-
-        //displayVec(tmp.bin);
       
         return tmp;
     }
@@ -422,25 +424,6 @@ class myuint{
         if(pos1<pos2){
             return true;
         }
-        // else if(pos1 == pos2){
-        //     for(int i = pos1 + 1; i < sizeBits; i++){
-        //         if(LHS[i].bin[i] == 1){
-        //             pos1 = i;
-        //             break;
-        //         }    
-        //     }
-        //     for(int i = pos2 + 1; i < sizeBits; i++){
-        //         if(num[i].bin[i] == 1){
-        //             pos2 = i;
-        //             break;
-        //         }    
-        //     }
-
-        //     if(pos1<pos2){
-        //         return true;
-        //     }
-            
-        // }
 
         return false;
     }
@@ -449,19 +432,12 @@ class myuint{
         this->sizeBits = sizeBits;
         myuint<T> LHS = *this;
         myuint<T> tmp;
-        // for(bool x:LHS.bin)
-        //     {
-        //         std::cout << x;
-        //     }
+     
         int cnt = 0;
 
         while((LHS > num) == true){
             LHS = LHS - num;
-            // for(bool x:LHS.bin)
-            // {
-            //     std::cout << x;
-            // }
-            // cout <<endl;
+          
             cnt++;
         }
         if(LHS == num){
@@ -491,13 +467,7 @@ class myuint{
             LHS = LHS - num;
             return LHS;
         }
-        //ho to get remainder?
         
-        // if((LHS > num) == false){
-        //      return LHS;
-        //         //rem = LHS - num;
-        //     }
-        // }
         return LHS;
     }
 

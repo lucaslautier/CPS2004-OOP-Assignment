@@ -1,9 +1,3 @@
-// import java.io.BufferedOutputStream;
-// import java.io.BufferedReader;
-// import java.io.BufferedWriter;
-// import java.io.InputStreamReader;
-// import java.io.OutputStream;
-// import java.io.OutputStreamWriter;
 import java.util.*;
 import java.nio.file.*;
 import java.io.*;
@@ -43,16 +37,15 @@ public class Main{
                 createAccount();
                 break;
             case 2:
-                //accountNo = login(user);
+                
                 login(user);
                 accountNo = user.getAccNo();
                 username = user.getUser();
                 password = user.getPass();
                 money = user.getMoney();
                 buyOrSell = 0;
-               // System.out.println(accountNo);
-                
-                //System.out.println(money); sanity check
+               
+
                 if(user.getLogBool() == true){
                     exchangeCrypto(currCrypto, user, accountNo,buyOrSell,money,username,password);
                 }
@@ -60,13 +53,13 @@ public class Main{
                 break;
             
             case 3:
-                //accountNo = login(user);
+              
                 login(user);
                 accountNo = user.getAccNo();
                 buyOrSell = 1;
-                //System.out.println(accountNo);
+               
                 money = user.getMoney();
-                //System.out.println(money); sanity check
+               
                 if(user.getLogBool() == true){
                     exchangeCrypto(currCrypto, user, accountNo, buyOrSell,money,username,password);
                 }
@@ -105,11 +98,7 @@ public class Main{
                 String _temp = null;
                 String _user = " ";
                 String _pass = " ";
-                //long _acc = 1000;
-                //double _money = 0.0;
-                // String _user = tmpUser.getUser();
-                // String _pass = tmpUser.getPass();
-                // _acc = tmpUser.getAccNo();
+        
     
                 boolean found = false;
                 while((_temp = reader.readLine()) != null)
@@ -120,8 +109,7 @@ public class Main{
                     
                     if(_user.equals(username) && _pass.equals(password)){
                         found = true;
-                        //_acc = Long.parseLong(account[0]) ;
-                        //_money = Double.parseDouble(account[3]);
+                      
                         tmpUser.setAccNo(Long.parseLong(account[0]));
                         tmpUser.setMoney(Double.parseDouble(account[3]));
                         tmpUser.setUser(username);
@@ -137,9 +125,7 @@ public class Main{
                 else{
                     System.out.println("Credentials entered did not match or account is not verified by administrator.");
                     tmpUser.setLogBool(found);
-                    // System.out.println("Press any key to continue...");
-                    // String cont = s.nextLine();
-                    
+                  
                     
                 }
                 
@@ -162,7 +148,6 @@ public class Main{
         String file = "account.txt";
         long lines = 0;
         long waitLines = 0;
-        //System.out.println(new File("account.txt").getAbsoluteFile());
         
             try{
                 // ALL NEW ACCOUNTS SAVED IN "waiting.txt"
@@ -184,8 +169,7 @@ public class Main{
                 
                 
                 if(acnt.readLine() == null){
-                    // while(sc.hasNextLine())
-                    // {
+              
                     lines = Files.lines(path).count();
                     accNo = lines;
                         
@@ -323,10 +307,6 @@ public class Main{
             
             String fileContents = buffer.toString();
             scA.close();
-            //InputStream accInput = Files.newInputStream(accFile);
-            // BufferedReader accReader = new BufferedReader(new InputStreamReader(accInput));
-            
-            // 
             
 
             if(buySell == 0){
@@ -374,8 +354,7 @@ public class Main{
                         //change money in account    
                         String toReplace = _acc+","+username+","+password+","+money;
                         String replacement =  _acc+","+username+","+password+","+newMoney;
-                        //System.out.println(toReplace);
-                        //System.out.println(replacement);
+                        
                         fileContents = fileContents.replaceAll(toReplace, replacement);
                         FileWriter accWriter = new FileWriter(accFile);
                         accWriter.append(fileContents);
@@ -407,8 +386,7 @@ public class Main{
                         //decrease money from account
                         String toReplace = _acc+","+username+","+password+","+money;
                         String replacement =  _acc+","+username+","+password+","+newMoney;
-                        //System.out.println(toReplace);
-                        //System.out.println(replacement);
+                        
                         fileContents = fileContents.replaceAll(toReplace, replacement);
                         FileWriter accWriter = new FileWriter(accFile);
                         accWriter.append(fileContents);
@@ -463,8 +441,7 @@ public class Main{
                     System.out.println("The following person has requested to be authenticated:");
                     System.out.println("Username: "+waitingAcc[1]);
                     System.out.println("Initial Investment: "+waitingAcc[3]);
-                   // System.out.println(line); //sanity check
-
+                   
                     System.out.println();
                     System.out.println("Approve (1) or Decline (0)?");
                     int AD = s.nextInt();
@@ -483,8 +460,6 @@ public class Main{
                 isDone = true;
                 isApproved = false;
                 administrator.adminApprove(line, isApproved, isDone);
-
-
 
             }catch(Exception ex){
                 System.out.println(ex.getMessage());

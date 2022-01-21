@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <string>
 using namespace std;
 
 template <typename T>
@@ -32,10 +33,12 @@ public:
         this->n = 0;
     }
 
-    acyclic(int x[],int s)
+    acyclic(T x[],int s)
     {   
+        this->n = 0;
         for(int i = 0; i < s; i++){
             addValue(x[i]);
+            
         }
     }
 
@@ -73,7 +76,6 @@ public:
     {
         int count = 0;
         Node<T>* x = this-> head_;
-
         for(int i = 0; i < n; i++)
         {         //go through all the list
             if(x->value == val)             //if node trying to be added is repeated, skip
@@ -126,7 +128,7 @@ public:
             cout << endl << "The node '" << val << "' has been successfully removed" << endl;
         }
     }
-    //just for checking
+    
 
     void print()
     {
